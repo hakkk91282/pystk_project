@@ -15,18 +15,13 @@ from dataclasses import dataclass
 # Append the "src" folder to sys.path.
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "src")))
 
-from agents.team1.agent1 import Agent1
-from agents.team2.agent2 import Agent2
-from agents.team3.agent3 import Agent3
-from agents.team4.agent4 import Agent4
-from agents.team5.agent5 import Agent5
-from agents.team6.agent6 import Agent6
-from agents.team7.agent7 import Agent7
+
+from agents.team7.agent7 import Agent7 #delete the other team 
 from pystk2_gymnasium.envs import STKRaceMultiEnv, AgentSpec
 from pystk2_gymnasium.definitions import CameraMode
 
-MAX_TEAMS = 7
-MAX_STEPS = 1000
+MAX_TEAMS = 1#let the number of 1 one team  
+MAX_STEPS = 200 #200 steps max
 NB_RACES = 1
 
 # Get the current timestamp
@@ -101,13 +96,8 @@ def create_race():
     agents = []
     names = []
 
-    agents.append(Agent1(env, path_lookahead=3))
-    agents.append(Agent2(env, path_lookahead=3))
-    agents.append(Agent3(env, path_lookahead=3))
-    agents.append(Agent4(env, path_lookahead=3))
-    agents.append(Agent5(env, path_lookahead=3))
-    agents.append(Agent6(env, path_lookahead=3))
-    agents.append(Agent7(env, path_lookahead=3))
+    
+    agents.append(Agent7(env, path_lookahead=3))#delete the other team
     np.random.shuffle(agents)
 
     for i in range(MAX_TEAMS):
@@ -125,6 +115,7 @@ def single_race(env, agents, names, scores):
     positions = []
     distances = []
     while not done and steps < MAX_STEPS:
+        print(steps)#display the numbers of steps
         actions = {}
         env.world_update()
         for i in range(MAX_TEAMS):
