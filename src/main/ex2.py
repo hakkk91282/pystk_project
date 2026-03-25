@@ -21,7 +21,7 @@ from pystk2_gymnasium.envs import STKRaceMultiEnv, AgentSpec
 from pystk2_gymnasium.definitions import CameraMode
 
 MAX_TEAMS = 1#let the number of 1 one team  
-MAX_STEPS = 200 #200 steps max
+MAX_STEPS = 1500 #1500 to let the time to the kart to backing
 NB_RACES = 1
 
 # Get the current timestamp
@@ -118,7 +118,7 @@ def single_race(env, agents, names, scores):
         print(steps)#display the numbers of steps
         actions = {}
         env.world_update()
-        for i in range(MAX_TEAMS):
+        for i in range(MAX_TEAMS): 
             str = f"{i}"
             try:
                 actions[str] = agents[i].choose_action(obs[str])

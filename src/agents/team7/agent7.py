@@ -11,7 +11,11 @@ class Agent7(KartAgent):
         self.agent_positions = []
         self.obs = None
         self.isEnd = False
+        self.count=0
+        self.times_block=0
         self.name = "HAKIM HADDOUCHI" # replace with your chosen name
+
+
 
     def reset(self):
         self.obs, _ = self.env.reset()
@@ -21,15 +25,28 @@ class Agent7(KartAgent):
         return self.isEnd
 
     def choose_action(self, obs):
-        acceleration = random.random()
-        steering = random.random()
+        brake=False
+        acceleration=0.5
+        target = obs["paths_end"][0] #return a vector [x,y,z]
+        x = target[0] #Extracting the x
+
+
+        speed = obs["velocity"][2]
+        if (speed >0 and obs["distance_down_track"] > 5.0): #if the kart goes forwad we increase the counter
+            self.times_block=self.times_block+1
+
+        if self.times_block>=200: #if we reach the 200 steps we go back 
+                brake=True
+                acceleration=0.0
+
+
         action = {
             "acceleration": acceleration,
-            "steer": steering,
-            "brake": False, # bool(random.getrandbits(1)),
-            "drift": bool(random.getrandbits(1)),
-            "nitro": bool(random.getrandbits(1)),
-            "rescue":bool(random.getrandbits(1)),
-            "fire": bool(random.getrandbits(1)),
+            "steer": x,
+            "brake": brake,
+            "drift": False,
+            "nitro": False,
+            "rescue": False,
+            "fire": False,
         }
         return action
