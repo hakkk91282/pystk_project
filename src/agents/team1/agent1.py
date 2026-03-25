@@ -48,9 +48,8 @@ class Agent1(KartAgent):
 
             return action
         else:   #si on a finit de nous en position de marche arriere on met jsuqua la fin de la course une marche arriere et on se dirige vers le point target
-            target = obs["paths_end"][0] #return a vector [x,y,z]
+            target = obs["paths_end"][3] #return a vector [x,y,z]
             x = target[0] #Extracting the x
-            speed = obs["velocity"][2]
             brake=True
             acceleration=0.0
 
