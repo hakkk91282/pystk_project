@@ -19,18 +19,10 @@ class Agent1(KartAgent):
         self.agent_positions = []
         self.obs = None
         self.isEnd = False
-        self.name = "Tasty Crousteam"
+        self.times_block=0
+        self.name = "HAKIM HADDOUCHI"
 
-        path_conf = Path(__file__).resolve().parent
-        path_conf = str(path_conf) + '/ConfigFileTeam1.yaml'   #Chemin du fichier de configuration
-        self.conf = OmegaConf.load(path_conf)                           #Importation du fichier de configuration
-
-        self.agentCenter = AgentCenter(env, self.conf, self.path_lookahead)
-        self.agentSpeed = AgentSpeed(env, self.conf, self.agentCenter, self.path_lookahead)
-        self.agentObstacles = AgentObstacles(env, self.conf, self.agentSpeed, self.path_lookahead)
-        self.agentRescue = AgentRescue(env, self.conf, self.agentObstacles)
-        self.agentItems = AgentItems(env, self.conf, self.agentRescue)
-        self.AgentDrift = AgentDrift(env, self.conf, self.agentItems)
+        
 
     def reset(self):
         self.obs, _ = self.env.reset()
@@ -40,4 +32,49 @@ class Agent1(KartAgent):
         return self.isEnd
 
     def choose_action(self, obs):
-        return self.agentItems.choose_action(obs)
+        if(self.times_block<40):  # on laise le random nous mettre en position de marche arriere pendant un court instant
+            self.times_block=self.times_block+1
+            acceleration = random.random()
+            steering = random.random()
+            action = {
+                "acceleration": acceleration,
+                "steer": steering,
+                "brake": False, # bool(random.getrandbits(1)),
+                "drift": bool(random.getrandbits(1)),
+                "nitro": bool(random.getrandbits(1)),
+                "rescue":bool(random.getrandbits(1)),
+                "fire": bool(random.getrandbits(1)),
+                }
+
+            return action
+        else:   #si on a finit de nous en position de marche arriere on met jsuqua la fin de la course une marche arriere et on se dirige vers le point target
+            target = obs["paths_end"][0] #return a vector [x,y,z]
+            x = target[0] #Extracting the x
+            speed = obs["velocity"][2]
+            brake=True
+            acceleration=0.0
+
+
+            action = {
+                "acceleration": acceleration,
+                "steer": x,
+                "brake": brake,
+                "drift": False,
+                "nitro": False,
+                "rescue": False,
+                "fire": False,
+            }
+            return action
+
+
+
+
+
+
+
+
+
+
+
+
+
